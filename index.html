@@ -125,8 +125,8 @@
 </head>
 <body>
   <h2>Clasificador de Repeticiones</h2>
-  <label for="entrada">Introduce nombres o números separados por coma:</label>
-  <textarea id="entrada" placeholder="Ej: Pipa, 5, Jesus, Fermin, 5, 5, Jose"></textarea>
+  <label for="entrada">Introduce nombres o números separados por coma o espacio:</label>
+  <textarea id="entrada" placeholder="Ej: Pedro, 5 Juan Pedro 5, Pedro Pedro 5"></textarea>
 
   <div class="botones">
     <button onclick="clasificar()">Clasificar</button>
@@ -148,9 +148,11 @@
   <script>
     function clasificar() {
       const texto = document.getElementById('entrada').value;
-      const elementos = texto.split(',')
-                              .map(e => e.trim())
-                              .filter(e => e !== '');
+
+      const elementos = texto
+        .split(/[\s,]+/) // separa por espacio o coma
+        .map(e => e.trim())
+        .filter(e => e !== '');
 
       const conteo = {};
       elementos.forEach(item => {
@@ -161,7 +163,7 @@
       const grupoMenores = [];
 
       for (const [valor, cantidad] of Object.entries(conteo)) {
-        const resultado = `${valor} (x${cantidad})`;
+        const resultado = `${valor} se repite ${cantidad} ${cantidad === 1 ? 'vez' : 'veces'}`;
         if (cantidad >= 4) {
           grupoMayores.push(resultado);
         } else {
